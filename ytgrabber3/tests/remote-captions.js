@@ -62,3 +62,13 @@ getRemoteCaptions('Ku42PPzYEqs', function(err, data){
 
 	console.log(ytutils.glueCaptions(data));
 });
+
+getRemoteCaptions('Ky5p-L_m6BQ', function(err, data){
+
+	if (err != null){
+		console.log(err);
+		return false;
+	}
+
+	console.log(ytutils.glueCaptions(data));
+});
