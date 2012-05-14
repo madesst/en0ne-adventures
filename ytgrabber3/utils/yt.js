@@ -3,112 +3,128 @@ var querystring = require('querystring'),
     ytutils = module.exports,
     fetcher = require('./fetcher');
 
-module.exports.glueCaptions = function(captions, duration){
+module.exports.glueCaptions = function (captions, duration) {
 
-	var captionsCount = captions.length;
+    var captionsCount = captions.length;
 
-	if (!captionsCount)
-		return [];
+    if (!captionsCount)
+        return [];
 
-	var glueDuration = duration || 25;
-	var mark = Math.floor(parseFloat(captions[0]['start']));
-	var content = captions[0]['content'];
-	var results = [];
+    var glueDuration = duration || 25;
+    var mark = Math.floor(parseFloat(captions[0]['start']));
+    var content = captions[0]['content'];
+    var results = [];
 
-	for (var i = 1; i < captionsCount; i++){
+    for (var i = 1; i < captionsCount; i++) {
 
-		if (Math.floor(parseFloat(captions[i]['start'])) < mark + glueDuration){
-			content += ' ' + captions[i]['content'];
-		} else {
-			results.push({
-				start: mark,
-				content: content
-			});
+        if (Math.floor(parseFloat(captions[i]['start'])) < mark + glueDuration) {
+            content += ' ' + captions[i]['content'];
+        } else {
 
-			mark = Math.floor(parseFloat(captions[i]['start']));
-			content = captions[i]['content'];
-		}
-	}
+            // надо как-то дойти то последней точки и если что-то осталось, перенести это дело в
+            // следующую отметочку
 
-	if (results[results.length - 1]['start'] != mark)
-		results.push({
-			start: mark,
-			content: content
-		});
+            var afterDot = '';
 
-	return results;
+            if (-1 != content.indexOf('.')) {
+                var dotIndex = content.lastIndexOf('.') + 1;
+                if (content[dotIndex] == ' ')
+                    afterDot = content.substring(dotIndex + 1, content.length);
+                else
+                    afterDot = content.substring(dotIndex, content.length);
+                content = content.substring(0, dotIndex);
+            }
+
+            results.push({
+                start:mark,
+                content:content
+            });
+
+            mark = Math.floor(parseFloat(captions[i]['start']));
+            content = afterDot + captions[i]['content'];
+        }
+    }
+
+    if (results[results.length - 1]['start'] != mark)
+        results.push({
+            start:mark,
+            content:content
+        });
+
+    return results;
 };
 
-module.exports.ytSearchApiUrlBuilder = function(params){
+module.exports.ytSearchApiUrlBuilder = function (params) {
 
-	var url = 'http://gdata.youtube.com/feeds/api/videos';
+    var url = 'http://gdata.youtube.com/feeds/api/videos';
 
-	var constParams = {
-		'max-results': 50,
-		'v': 2,
-		'hl': 'en_US',
-		'lr': 'en',
-		'caption': true,
-		'alt': 'json'
-	};
+    var constParams = {
+        'max-results':50,
+        'v':2,
+        'hl':'en_US',
+        'lr':'en',
+        'caption':true,
+        'alt':'json'
+    };
 
-	// merge
-	for (var key in params)
-		constParams[key] = params[key];
+    // merge
+    for (var key in params)
+        constParams[key] = params[key];
 
-	return url + '?' + querystring.stringify(constParams);
+    return url + '?' + querystring.stringify(constParams);
 
 };
 
-module.exports.removeWhiteSpaces = function(str){
-	return str
-			.replace(/\n/g, '')
-			.replace(/\t/g, '')
-			.replace(/&#39;/g, "'");
+module.exports.removeWhiteSpaces = function (str) {
+    return str
+        .replace(/\n/g, '')
+        .replace(/\t/g, '')
+        .replace(/&#39;/g, "'");
 };
 
-module.exports.getCaptionsAsync = function(videoId, callback){
+module.exports.getCaptionsAsync = function (videoId, callback) {
 
     var workUrl = 'http://video.google.com/timedtext?lang=en&v=' + videoId,
         results = [],
         query = new fetcher();
 
-    query.on('complete', function(err, data, rs){
+    query.on('complete',
+        function (err, data, rs) {
 
-        if (err){
-            callback(err);
-            return false;
-        }
-
-        if (!data || data.length == 0){
-            callback('no captions for ' + videoId);
-            return false;
-        }
-
-        var parser = sax.parser(true);
-
-        parser.onopentag = function (node) {
-            if (node['attributes']['start'] != undefined){
-                results.push({
-                    start: node['attributes']['start']
-                });
+            if (err) {
+                callback(err);
+                return false;
             }
-        };
 
-        parser.ontext = function (content) {
-            results[results.length - 1]['content'] = ytutils.removeWhiteSpaces(content);
-        };
-
-        parser.onend = function () {
-            if (results.length > 0)
-                callback(null, results);
-            else
+            if (!data || data.length == 0) {
                 callback('no captions for ' + videoId);
+                return false;
+            }
 
-        };
+            var parser = sax.parser(true);
 
-        parser.write(data).close();
+            parser.onopentag = function (node) {
+                if (node['attributes']['start'] != undefined) {
+                    results.push({
+                        start:node['attributes']['start']
+                    });
+                }
+            };
 
-    }).fetch(workUrl);
+            parser.ontext = function (content) {
+                results[results.length - 1]['content'] = ytutils.removeWhiteSpaces(content);
+            };
+
+            parser.onend = function () {
+                if (results.length > 0)
+                    callback(null, results);
+                else
+                    callback('no captions for ' + videoId);
+
+            };
+
+            parser.write(data).close();
+
+        }).fetch(workUrl);
 
 };

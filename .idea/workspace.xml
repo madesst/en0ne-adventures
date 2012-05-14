@@ -2,8 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="a53850fd-3c76-4a1d-baf5-ff1dcabc429e" name="Default" comment="">
-      <change type="MOVED" beforePath="$PROJECT_DIR$/ytgrabber3/captions.js" afterPath="$PROJECT_DIR$/ytgrabber3/tests/captions.js" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/ytgrabber3/remote-captions.js" afterPath="$PROJECT_DIR$/ytgrabber3/tests/remote-captions.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/ytgrabber3/tests/lastindexof.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ytgrabber3/tests/remote-captions2.js" afterPath="$PROJECT_DIR$/ytgrabber3/tests/remote-captions2.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ytgrabber3/utils/yt.js" afterPath="$PROJECT_DIR$/ytgrabber3/utils/yt.js" />
     </list>
     <ignored path="node.iws" />
@@ -26,37 +27,10 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="remote-captions.js" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/ytgrabber3/tests/remote-captions.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="36" column="0" selection-start="506" selection-end="970" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="remote-captions2.js" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/ytgrabber3/tests/remote-captions2.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="0" column="28" selection-start="28" selection-end="28" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="possible-count.js" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/ytgrabber3/tests/possible-count.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="13" column="34" selection-start="1099" selection-end="1099" vertical-scroll-proportion="0.2489121">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="captions.js" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/ytgrabber3/tests/captions.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
+            <state line="6" column="0" selection-start="158" selection-end="337" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -65,7 +39,16 @@
       <file leaf-file-name="yt.js" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/ytgrabber3/utils/yt.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="82" column="39" selection-start="1770" selection-end="1770" vertical-scroll-proportion="0.0">
+            <state line="28" column="20" selection-start="836" selection-end="836" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="lastindexof.js" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/ytgrabber3/tests/lastindexof.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="1" column="45" selection-start="46" selection-end="46" vertical-scroll-proportion="0.018932875">
               <folding />
             </state>
           </provider>
@@ -85,8 +68,9 @@
     <option name="changedFiles">
       <list>
         <option value="$PROJECT_DIR$/ytgrabber3/remote-captions.js" />
-        <option value="$PROJECT_DIR$/ytgrabber3/utils/yt.js" />
         <option value="$PROJECT_DIR$/ytgrabber3/remote-captions2.js" />
+        <option value="$PROJECT_DIR$/ytgrabber3/tests/lastindexof.js" />
+        <option value="$PROJECT_DIR$/ytgrabber3/utils/yt.js" />
         <option value="$PROJECT_DIR$/ytgrabber3/tests/remote-captions2.js" />
       </list>
     </option>
@@ -286,27 +270,6 @@
     <breakpoint-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/ytgrabber3/tests/captions.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/ytgrabber3/utils/yt.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="82" column="39" selection-start="1770" selection-end="1770" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/ytgrabber3/tests/remote-captions2.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="28" selection-start="28" selection-end="28" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/ytgrabber3/tests/remote-captions.js">
       <provider selected="true" editor-type-id="text-editor">
         <state line="36" column="0" selection-start="506" selection-end="970" vertical-scroll-proportion="0.0">
@@ -316,7 +279,35 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/ytgrabber3/tests/possible-count.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="13" column="34" selection-start="1099" selection-end="1099" vertical-scroll-proportion="0.2489121">
+        <state line="13" column="34" selection-start="1099" selection-end="1099" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/ytgrabber3/tests/captions.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="-1.6422976">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/ytgrabber3/utils/yt.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="28" column="20" selection-start="836" selection-end="836" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/ytgrabber3/tests/remote-captions2.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="6" column="0" selection-start="158" selection-end="337" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/ytgrabber3/tests/lastindexof.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="1" column="45" selection-start="46" selection-end="46" vertical-scroll-proportion="0.018932875">
           <folding />
         </state>
       </provider>
