@@ -1,7 +1,8 @@
 var querystring = require('querystring'),
     sax = require('./sax'),
     ytutils = module.exports,
-    fetcher = require('./fetcher');
+    fetcher = require('./fetcher'),
+	combinator = require('./combinator');
 
 module.exports.glueCaptions = function (captions, duration) {
 
@@ -84,6 +85,11 @@ module.exports.removeWhiteSpaces = function (str) {
 
 module.exports.getCaptionsAsync = function (videoId, callback) {
 
+	if (!videoId){
+		callback('No video id');
+		return false;
+	}
+
     var workUrl = 'http://video.google.com/timedtext?lang=en&v=' + videoId,
         results = [],
         query = new fetcher();
@@ -127,4 +133,71 @@ module.exports.getCaptionsAsync = function (videoId, callback) {
 
         }).fetch(workUrl);
 
+};
+
+module.exports.getAllPossibleUrlsForSearchApi = function(){
+
+	var comb = new combinator();
+
+	comb.addVariants('orderBy', ['viewCount', 'rating', 'published', 'relevance']);
+	comb.addVariants('time', ['today', 'this_week', 'this_month', 'all_time']);
+	comb.addVariants('duration', ['short', 'medium', 'long']);
+	comb.addVariants('q', [
+		'',
+		'fun',
+		'cars',
+		'news',
+		'autos',
+		'comedy',
+		'entertainment',
+		'gaming',
+		'howto',
+		'activism',
+		'people',
+		'pets',
+		'science',
+		'travel',
+		'sport'
+	]);
+	comb.addVariants('category', [
+		'',
+		'Autos',
+		'Animals',
+		'Film',
+		'Music',
+		'Sports',
+		'Shortmov',
+		'Travel',
+		'Games',
+		'Videoblog',
+		'People',
+		'Comedy',
+		'Entertainment',
+		'News',
+		'Howto',
+		'Education',
+		'Tech',
+		'Nonprofit',
+		/*'Movies',
+		'Movies_anime_animation',
+		'Movies_action_adventure',
+		'Movies_classics',
+		'Movies_comedy',
+		'Movies_documentary',
+		'Movies_drama',
+		'Movies_family',
+		'Movies_foreign',
+		'Movies_horror',
+		'Movies_sci_fi_fantasy',
+		'Movies_thriller',
+		'Movies_shorts',*/
+		'Shows',
+		'Trailers'
+	]);
+
+	var tmp = {}; var urls = [];
+	while((tmp = comb.next()) !== false)
+		urls.push(ytutils.ytSearchApiUrlBuilder(tmp));
+
+	return urls;
 };
