@@ -13,7 +13,7 @@ var possibleUrls = ytutils.getAllPossibleUrlsForSearchApi(),
 var mainUrlsFetcher = new fetcher(),
     pagesFetcher = new fetcher();
 
-// file writer partionaller
+// splice all data to some files
 setInterval(function(){
 
 	var fileName = './data/data-' + currFileIndex + '.xml';
