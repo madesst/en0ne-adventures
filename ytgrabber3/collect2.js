@@ -7,12 +7,30 @@ var possibleUrls = ytutils.getAllPossibleUrlsForSearchApi(),
     notAllowedVideos = 0,
     notEnoughLikesVideos = 0,
     repeatedVideos = 0,
-    globalRequestDelay = 1000;
+    globalRequestDelay = 1000,
+	currFileIndex = 0;
 
 var mainUrlsFetcher = new fetcher(),
     pagesFetcher = new fetcher();
 
+// file writer partionaller
+setInterval(function(){
+
+	var fileName = './data/data-' + currFileIndex + '.xml';
+
+	fs.stat(fileName, function(err, stats){
+		if (err)
+			return false;
+		if (stats.size / 1024 / 1024 > 5)
+			++currFileIndex;
+	});
+
+}, 3000);
+
 var saveVideos = function(videoList){
+
+	if (!videoList || !videoList.length)
+		return false;
 
     videoList.forEach(function(video){
 
@@ -55,7 +73,8 @@ var saveVideos = function(videoList){
             // prepare content for export
             var xml = "<video>\n" +
                 "<id>" + videoId + "</id>\n" +
-                "<title>" + video.title.$t + "</title>\n" +
+                "<title>" + ytutils.htmlEscape(video.title.$t) + "</title>\n" +
+				"<viewCount>" + video.yt$statistics.viewCount + "</viewCount>\n" +
                 "<captions>\n";
 
             for(var i in data)
@@ -66,7 +85,9 @@ var saveVideos = function(videoList){
             xml += "</captions>\n" +
                 "</video>\n";
 
-            var file = fs.createWriteStream('./data/data.xml', {'flags': 'a'});
+			var fileName = './data/data-' + currFileIndex + '.xml';
+
+            var file = fs.createWriteStream(fileName, {'flags': 'a'});
             file.end(xml);
 
             console.log('---');

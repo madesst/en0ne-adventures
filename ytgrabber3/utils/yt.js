@@ -83,6 +83,15 @@ module.exports.removeWhiteSpaces = function (str) {
         .replace(/  /g, ' ');
 };
 
+module.exports.htmlEscape = function(str){
+
+	return str.split('&').join('&amp;')
+			.split('<').join('&lt;')
+			.split('>').join('&gt;')
+			.split('"').join('&quot;')
+			.split("'").join('&#39;')
+}
+
 module.exports.getCaptionsAsync = function (videoId, callback) {
 
 	if (!videoId){
