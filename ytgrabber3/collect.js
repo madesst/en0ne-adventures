@@ -8,32 +8,6 @@ var videos = {};
 
 var parseVideos = function(feed, callback){
 
-	var getVideoId = function(str){
-
-		var parts = str.split(':');
-
-		if (!parts.length)
-			return false;
-
-		for (var i = 0; i < parts.length; i++)
-			if (parts[i] == 'video' && parts[i+1] != undefined)
-				return parts[i+1];
-
-		return false;
-	}
-
-	var embedAllowed = function(accessList){
-
-		if (!accessList)
-			return false;
-
-		for (var i in accessList)
-			if (accessList[i].action == 'embed' && accessList[i].permission == 'allowed')
-				return true;
-
-		return false;
-	}
-
 	if (!feed)
 		return false;
 
@@ -42,7 +16,7 @@ var parseVideos = function(feed, callback){
 
 	feed.entry.forEach(function(el){
 
-		var allowed = embedAllowed(el.yt$accessControl);
+		var allowed = ytutils.embedAllowed(el.yt$accessControl);
 
 		var likes = 0;
 		if (el['yt$rating'] && el['yt$rating']['numLikes'] != undefined)
@@ -50,7 +24,7 @@ var parseVideos = function(feed, callback){
 
 		if (allowed && likes > 10){
 
-			var videoId = getVideoId(el.id.$t);
+			var videoId = ytutils.getVideoIdFromFeedIdField(el.id.$t);
 
 			ytutils.getCaptionsAsync(videoId, function(err, captions){
 
@@ -71,6 +45,8 @@ var parseVideos = function(feed, callback){
 
 				var dataFile = fs.createWriteStream('./data/videos', {'flags': 'a'});
 				dataFile.end(JSON.stringify(tmp) + ",\n");
+
+                captions = null; // maybe it will help with memory leak
 
 			});
 

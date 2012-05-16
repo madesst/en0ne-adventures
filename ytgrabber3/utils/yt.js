@@ -13,17 +13,17 @@ module.exports.glueCaptions = function (captions, duration) {
 
     var glueDuration = duration || 25;
     var mark = Math.floor(parseFloat(captions[0]['start']));
-    var content = captions[0]['content'];
+    var content = captions[0]['content'] || '';
     var results = [];
 
     for (var i = 1; i < captionsCount; i++) {
 
+        if (captions[i].content == '' || captions[i].start == undefined)
+            continue;
+
         if (Math.floor(parseFloat(captions[i]['start'])) < mark + glueDuration) {
             content += ' ' + captions[i]['content'];
         } else {
-
-            // надо как-то дойти то последней точки и если что-то осталось, перенести это дело в
-            // следующую отметочку
 
             var afterDot = '';
 
@@ -46,7 +46,7 @@ module.exports.glueCaptions = function (captions, duration) {
         }
     }
 
-    if (results[results.length - 1]['start'] != mark)
+    if (results[results.length - 1] && results[results.length - 1]['start'] != mark)
         results.push({
             start:mark,
             content:content
@@ -78,9 +78,9 @@ module.exports.ytSearchApiUrlBuilder = function (params) {
 
 module.exports.removeWhiteSpaces = function (str) {
     return str
-        .replace(/\n/g, '')
-        .replace(/\t/g, '')
-        .replace(/&#39;/g, "'");
+        .replace(/\n/g, ' ')
+        .replace(/\t/g, ' ')
+        .replace(/  /g, ' ');
 };
 
 module.exports.getCaptionsAsync = function (videoId, callback) {
@@ -95,7 +95,7 @@ module.exports.getCaptionsAsync = function (videoId, callback) {
         query = new fetcher();
 
     query.on('complete',
-        function (err, data, rs) {
+        function (err, data) {
 
             if (err) {
                 callback(err);
@@ -201,3 +201,41 @@ module.exports.getAllPossibleUrlsForSearchApi = function(){
 
 	return urls;
 };
+
+module.exports.getVideoIdFromFeedIdField = function(feedField){
+
+    var parts = feedField.split(':');
+
+    if (!parts.length)
+        return false;
+
+    for (var i = 0; i < parts.length; i++)
+        if (parts[i] == 'video' && parts[i+1] != undefined)
+            return parts[i+1];
+
+    return false;
+}
+
+module.exports.embedAllowed = function(accessList){
+
+    if (!accessList)
+        return false;
+
+    for (var i in accessList)
+        if (accessList[i].action == 'embed' && accessList[i].permission == 'allowed')
+            return true;
+
+    return false;
+}
+
+module.exports.getNextLinkFromFeed = function(links){
+
+    if (!links)
+        return false;
+
+    for (var i in links)
+        if (links[i].rel == 'next')
+            return links[i].href;
+
+    return false;
+}
