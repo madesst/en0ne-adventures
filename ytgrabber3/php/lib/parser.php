@@ -25,7 +25,7 @@ class YTSaxVideoParser
     {
         foreach ($this->parts as $file) {
 
-            $this->parser = xml_parser_create('UTF-8');
+            $this->parser = xml_parser_create();
 
             xml_set_object($this->parser, $this);
             xml_set_element_handler($this->parser, 'openTag', 'closeTag');
@@ -35,9 +35,17 @@ class YTSaxVideoParser
 
             $fp = fopen($file, 'r');
 
+//            $body = file_get_contents($file);
+//            $body = preg_replace('/[^\x{0009}\x{000a}\x{000d}\x{0020}-\x{D7FF}\x{E000}-\x{FFFD}]+/u', '', $body);
+//            xml_parse($this->parser, $body);
+
             while (!feof($fp)) {
-                if (($chunk = fgets($fp, 4096)) != false){
-                    xml_parse($this->parser, $chunk);
+                if (($chunk = fgets($fp, 1024)) != false){
+                    try{
+                        xml_parse($this->parser, $chunk);
+                    } catch (Exception $e) {
+                        echo $e->getMessage();
+                    }
                 }
             }
 
@@ -47,11 +55,12 @@ class YTSaxVideoParser
 
             $errCode = xml_get_error_code($this->parser);
 
-            if ($errCode)
-                throw new Exception(xml_error_string($errCode));
+            if ($errCode){
+                echo 'current line: ', xml_get_current_line_number($this->parser), PHP_EOL;
+                throw new Exception('Error parsing in ' . $file . ' [' . xml_error_string($errCode) . ']');
+            }
 
             xml_parser_free($this->parser);
-
         }
     }
 

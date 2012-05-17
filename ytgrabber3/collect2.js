@@ -78,7 +78,7 @@ var saveVideos = function(videoList){
                 "<captions>\n";
 
             for(var i in data)
-                xml += "<caption start=\"" + data[i].start + "\">" + data[i].content + "</caption>\n";
+                xml += "<caption start=\"" + data[i].start + "\">" + data[i].content + "></caption>\n";
 
             data = null;
 

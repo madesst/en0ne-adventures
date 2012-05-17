@@ -80,7 +80,9 @@ module.exports.removeWhiteSpaces = function (str) {
     return str
         .replace(/\n/g, ' ')
         .replace(/\t/g, ' ')
-        .replace(/  /g, ' ');
+        .replace(/  /g, ' ')
+        .split('<').join('&lt;')
+        .split('>').join('&gt;')
 };
 
 module.exports.htmlEscape = function(str){
@@ -150,7 +152,7 @@ module.exports.getAllPossibleUrlsForSearchApi = function(){
 
 	comb.addVariants('orderBy', ['viewCount', 'rating', 'published', 'relevance']);
 	comb.addVariants('time', ['today', 'this_week', 'this_month', 'all_time']);
-	comb.addVariants('duration', ['short', 'medium', 'long']);
+	comb.addVariants('duration', ['short', 'medium']);
 	comb.addVariants('q', [
 		'',
 		'fun',
