@@ -275,3 +275,16 @@ module.exports.getNextLinkFromFeed = function(links){
 
     return false;
 }
+
+module.exports.getVideoCategoryLabelAndTerm = function(category){
+
+	for (var i in category){
+		if (category[i]['scheme'] == "http://gdata.youtube.com/schemas/2007/categories.cat")
+			return {
+				label: category[i]['label'],
+				term: category[i]['term']
+			};
+	}
+
+	return '';
+}

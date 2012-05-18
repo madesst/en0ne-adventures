@@ -72,12 +72,15 @@ var saveVideos = function(videoList){
 
             data = ytutils.glueCaptions(data);
 
+			var category = ytutils.getVideoCategoryLabelAndTerm(video.category);
+
             // prepare content for export
             var xml = "<video>\n" +
                 "<id>" + videoId + "</id>\n" +
                 "<title>" + ytutils.htmlEscape(video.title.$t) + "</title>\n" +
 				"<viewCount>" + video.yt$statistics.viewCount + "</viewCount>\n" +
-                "<category></category>" +
+                "<categoryTerm>" + category.term  + "</categoryTerm>\n" +
+				"<categoryLabel>" + category.label + "</categoryLabel>\n" +
                 "<captions>\n";
 
             for(var i in data)
@@ -92,7 +95,6 @@ var saveVideos = function(videoList){
 
             var file = fs.createWriteStream(fileName, {'flags': 'a'});
             file.end(xml, 'utf8');
-            file.destroy();
 
             console.log('---');
             console.log('urls left:', possibleUrls.length);
