@@ -7,6 +7,7 @@ var possibleUrls = ytutils.getAllPossibleUrlsForSearchApi(),
     notAllowedVideos = 0,
     notEnoughLikesVideos = 0,
     repeatedVideos = 0,
+    addedVideos = 0,
     globalRequestDelay = 1000,
 	currFileIndex = 0;
 
@@ -56,10 +57,12 @@ var saveVideos = function(videoList){
             return true;
         }
 
-        if (videos[videoId] != undefined)
-            return true;
-        else
+        if (videos[videoId] != undefined){
             repeatedVideos++;
+            return true;
+        } else {
+            videos[videoId] = true; // just a mark for unique support
+        }
 
         console.log('working on [', videoId, ']');
 
@@ -67,7 +70,6 @@ var saveVideos = function(videoList){
 
             if (err || !data || data.length == 0) return false;
 
-            videos[videoId] = true; // just a mark for unique support
             data = ytutils.glueCaptions(data);
 
             // prepare content for export
@@ -75,6 +77,7 @@ var saveVideos = function(videoList){
                 "<id>" + videoId + "</id>\n" +
                 "<title>" + ytutils.htmlEscape(video.title.$t) + "</title>\n" +
 				"<viewCount>" + video.yt$statistics.viewCount + "</viewCount>\n" +
+                "<category></category>" +
                 "<captions>\n";
 
             for(var i in data)
@@ -88,15 +91,20 @@ var saveVideos = function(videoList){
 			var fileName = './data/data-' + currFileIndex + '.xml';
 
             var file = fs.createWriteStream(fileName, {'flags': 'a'});
-            file.end(xml);
+            file.end(xml, 'utf8');
+            file.destroy();
 
             console.log('---');
             console.log('urls left:', possibleUrls.length);
-            console.log('videos saved:', Object.keys(videos).length);
+            console.log('videos saved:', addedVideos);
             console.log('not allowed videos:', notAllowedVideos);
             console.log('not enough likes:', notEnoughLikesVideos);
             console.log('duplicates:', repeatedVideos);
             console.log('---');
+
+            addedVideos++;
+
+            data = null;
 
         });
 

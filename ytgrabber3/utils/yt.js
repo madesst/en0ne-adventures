@@ -80,9 +80,7 @@ module.exports.removeWhiteSpaces = function (str) {
     return str
         .replace(/\n/g, ' ')
         .replace(/\t/g, ' ')
-        .replace(/  /g, ' ')
-        .split('<').join('&lt;')
-        .split('>').join('&gt;')
+        .replace(/  /g, ' ');
 };
 
 module.exports.htmlEscape = function(str){
@@ -118,29 +116,56 @@ module.exports.getCaptionsAsync = function (videoId, callback) {
                 return false;
             }
 
-            var parser = sax.parser(true);
+            (function(xml){
 
-            parser.onopentag = function (node) {
-                if (node['attributes']['start'] != undefined) {
-                    results.push({
-                        start:node['attributes']['start']
-                    });
-                }
-            };
+                var parser = sax.parser(true),
+                    currTag = '',
+                    inText = false,
+                    data = '';
 
-            parser.ontext = function (content) {
-                results[results.length - 1]['content'] = ytutils.removeWhiteSpaces(content);
-            };
+                parser.onopentag = function(node){
 
-            parser.onend = function () {
-                if (results.length > 0)
-                    callback(null, results);
-                else
-                    callback('no captions for ' + videoId);
+                    inText = false,
+                    currTag = node.name;
 
-            };
+                    if (currTag == 'text' && node['attributes']['start'] != undefined)
+                        results.push({
+                            start:node['attributes']['start']
+                        });
 
-            parser.write(data).close();
+                };
+
+                parser.onclosetag = function(){
+                    inText = false;
+                    currTag = '';
+                    data = '';
+                };
+
+                parser.ontext = function (chunk){
+
+                    if (currTag == 'text'){
+                        if (inText)
+                            results[results.length - 1]['content'] += chunk;
+                        else
+                            results[results.length - 1]['content'] = chunk;
+                    }
+
+                    inText = true;
+                };
+
+                parser.onend = function () {
+                    if (results.length > 0)
+                        callback(null, results);
+                    else
+                        callback('no captions for ' + videoId);
+
+                };
+
+                parser.write(xml).close();
+
+                data = null;
+
+            })(data);
 
         }).fetch(workUrl);
 
