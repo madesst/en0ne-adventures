@@ -2,40 +2,51 @@ var fs = require('fs'),
     sax = require('./../utils/sax');
 
 var xml = fs.readFileSync('data.xml', 'utf8');
+var results = [];
 
 (function(xml){
 
-    var parser = sax.parser(true),
-        currTag = '',
-        inText = false,
-        data = '';
+	var parser = sax.parser(true),
+			currTag = '',
+			inText = false,
+			data = '';
 
-    parser.onopentag = function(node){
-        inText = false;
-        currTag = node.name;
-    };
+	parser.onopentag = function(node){
 
-    parser.onclosetag = function(){
+		inText = false,
+				currTag = node.name;
 
-        if (currTag == 'text')
-            console.log(data, "\n\n");
+		if (currTag == 'text' && node['attributes']['start'] != undefined)
+			results.push({
+				start:node['attributes']['start']
+			});
 
-        inText = false;
-        currTag = '';
-        data = '';
-    };
+	};
 
-    parser.ontext = function (chunk){
+	parser.onclosetag = function(){
+		inText = false;
+		currTag = '';
+		data = '';
+	};
 
-        if (currTag == 'text')
-            if (inText)
-                data += chunk;
-            else
-                data = chunk;
+	parser.ontext = function (chunk){
 
-        inText = true;
-    };
+		if (currTag == 'text'){
+			if (inText)
+				results[results.length - 1]['content'] += chunk;
+			else
+				results[results.length - 1]['content'] = chunk;
+		}
 
-    parser.write(xml).close();
+		inText = true;
+	};
+
+	parser.onend = function () {
+		console.log(results);
+	};
+
+	parser.write(xml).close();
+
+	data = null;
 
 })(xml);
