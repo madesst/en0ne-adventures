@@ -1,0 +1,107 @@
+*
+{
+    margin: 0; padding: 0;
+}
+
+body
+{
+    font-family: "Arial";
+}
+
+#root
+{
+    padding: 120px;
+}
+
+.embed-dialog
+{
+    border: 1px solid #bbb;
+    border-radius: 4px;
+    display: inline-block;
+    padding: 15px;
+    position: relative;
+    background: #fff;
+    padding-top: 30px;
+}
+
+.embed-dialog .field
+{
+    margin-bottom: 10px;
+}
+
+.embed-dialog label
+{
+    display: block;
+    padding-bottom: 10px;
+}
+
+.embed-dialog textarea
+{
+    border: 1px solid #ccc;
+    outline: none;
+    width: 450px;
+    padding: 5px;
+    font-size: 14px;
+    color: #444;
+    border-radius: 4px;
+}
+
+.embed-dialog .boxes
+{
+    overflow: hidden;
+    position: relative;
+    height: 90px;
+    margin-bottom: 20px;
+}
+
+.embed-dialog .box
+{
+    position: absolute;
+    bottom: 0;
+    float: left;
+    padding: 20px;
+    border: 1px solid #ccc;
+    cursor: pointer;
+    font-size: 12px;
+    color: #666;
+    border-radius: 4px;
+}
+
+.embed-dialog .box:hover
+{
+    background: #eee;
+}
+
+.embed-dialog .box.active
+{
+    background: #eee;
+}
+
+.embed-dialog .size-2
+{
+    padding: 25px;
+    left: 100px;
+}
+
+.embed-dialog .size-3
+{
+    padding: 30px;
+    left: 210px;
+}
+
+.embed-dialog .size-4
+{
+    padding: 35px;
+    left: 330px;
+}
+
+.embed-dialog .close-button
+{
+    font-weight: bold;
+    font-size: 24px;
+    position: absolute;
+    right: 10px;
+    top: 5px;
+    color: #555;
+    cursor: pointer;
+}
