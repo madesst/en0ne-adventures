@@ -1,0 +1,15 @@
+*
+{
+    margin: 0; padding: 0;
+}
+
+.cc-clip-button
+{
+    background: #262626 url(http://html/cliplock/bookmarklet/images/clipit.jpg) no-repeat;
+    width: 30px;
+    height: 65px;
+    border-radius: 4px 0 0 4px;
+    position: absolute;
+    top: 10px;
+    left: 10px;
+}

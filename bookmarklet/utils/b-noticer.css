@@ -1,0 +1,16 @@
+.b-noticer
+{
+    padding: 10px 20px 8px 45px;
+    background: url(http://html/cliplock/bookmarklet/images/clipclock-icon.jpg) no-repeat scroll 10px center #000;
+    color: #eee;
+    font-size: 13px;
+    z-index: 99999;
+    display: inline-block;
+    max-width: 350px;
+    position: fixed;
+    bottom: 38px;
+    left: 50px;
+    font-style: italic;
+    opacity: 0.8;
+    border-radius: 15px;
+}
